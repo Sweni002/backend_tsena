@@ -7,11 +7,12 @@ from sockets import socketio  # importer l’instance
 def get_produits():
     produits = Produit.query.order_by(Produit.nom.asc()).all()
     
-    socketio.emit("produit_ajoute", {
-        "id": produits.idproduit,
-        "nom": produits.nom,
-        "qte": produits.qte
-    })
+    for p in produits:
+        socketio.emit("produit_ajoute", {
+            "id": p.idproduit,
+            "nom": p.nom,
+            "qte": p.qte
+        })
 
     result = []
     for p in produits:
