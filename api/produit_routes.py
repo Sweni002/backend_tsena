@@ -131,7 +131,13 @@ def update_produit(idproduit):
         db.session.add(mouvement)
 
     db.session.commit()
-
+    db.session.flush()  # ⚡ Pour obtenir l'ID avant commit
+    socketio.emit("produit_modifie", {
+            "id": p.idproduit,
+            "nom": p.nom,
+            "qte": p.qte
+        })
+    
     return jsonify({
         'idproduit': p.idproduit,
         'nom': p.nom,
