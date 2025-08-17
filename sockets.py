@@ -1,6 +1,7 @@
 from flask_socketio import SocketIO
 
-socketio = SocketIO(cors_allowed_origins="*")
+# Forcer async_mode -> "eventlet" (ou "gevent" si tu préfères)
+socketio = SocketIO(cors_allowed_origins="*", async_mode="eventlet")
 
 def init_socketio(app):
     socketio.init_app(app)
@@ -8,10 +9,10 @@ def init_socketio(app):
     # Exemple d’événement côté serveur
     @socketio.on("connect")
     def handle_connect():
-        print("Un client est connecté au WebSocket")
+        print("✅ Un client est connecté au WebSocket")
 
     @socketio.on("disconnect")
     def handle_disconnect():
-        print("Un client s'est déconnecté")
+        print("❌ Un client s'est déconnecté")
 
     return socketio
