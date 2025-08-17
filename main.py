@@ -1,4 +1,6 @@
-import os
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask
 from models import db, ProduitStock
 from api import produit_bp, vente_bp
