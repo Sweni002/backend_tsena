@@ -53,15 +53,15 @@ def add_produit():
         benefice=benefice
     )
     
+  
+    db.session.add(p)
+    db.session.flush()  # ⚡ Pour obtenir l'ID avant commit
     socketio.emit("produit_ajoute", {
             "id": p.idproduit,
             "nom": p.nom,
             "qte": p.qte
         })
     
-    db.session.add(p)
-    db.session.flush()  # ⚡ Pour obtenir l'ID avant commit
-
     # Ajouter un mouvement initial dans ProduitStock
     if p.qte > 0:
         mouvement = ProduitStock(
