@@ -176,7 +176,7 @@ def approvisionner_produit(idproduit):
 
     db.session.commit()
     db.session.flush()  # ⚡ Pour obtenir l'ID avant commit
-    socketio.emit("produit_modifie", {
+    socketio.emit("produit_approv", {
             "id": p.idproduit,
             "nom": p.nom,
             "qte": p.qte
