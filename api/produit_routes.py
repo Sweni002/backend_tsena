@@ -7,13 +7,7 @@ from sockets import socketio  # importer l’instance
 def get_produits():
     produits = Produit.query.order_by(Produit.nom.asc()).all()
     
-    for p in produits:
-        socketio.emit("produit_ajoute", {
-            "id": p.idproduit,
-            "nom": p.nom,
-            "qte": p.qte
-        })
-
+ 
     result = []
     for p in produits:
         result.append({
@@ -58,6 +52,13 @@ def add_produit():
         prix=prix, 
         benefice=benefice
     )
+    
+    socketio.emit("produit_ajoute", {
+            "id": p.idproduit,
+            "nom": p.nom,
+            "qte": p.qte
+        })
+    
     db.session.add(p)
     db.session.flush()  # ⚡ Pour obtenir l'ID avant commit
 
