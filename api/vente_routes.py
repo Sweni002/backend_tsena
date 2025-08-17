@@ -2,6 +2,7 @@ from flask import request, jsonify
 from . import vente_bp
 from models import db, Vente  ,Produit
 from datetime import datetime
+from sockets import socketio  # importer l’instance
 
 @vente_bp.route('/', methods=['GET'])
 def get_ventes():
@@ -49,6 +50,12 @@ def add_vente():
         return  jsonify({"error": "Quantité du produit est negative"}), 400
     db.session.add(new_vente)
     db.session.commit()
+    db.session.flush()  # ⚡ Pour obtenir l'ID avant commit
+    socketio.emit("vente_ajoute", {
+            "id": new_vente.idvente,
+            "nom": new_vente.produit.nom,
+            "qte": new_vente.qte
+        })
     return jsonify({"message": "Vente ajoutée avec succès"}), 200
 
 
